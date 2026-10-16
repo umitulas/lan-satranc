@@ -1,0 +1,30 @@
+name: Build Windows EXE
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Kodlari Al
+      uses: actions/checkout@v4
+
+    - name: Python Kur
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Kutuphaneleri Yukle
+      run: |
+        python -m pip install --upgrade pip
+        pip install chess pyinstaller
+
+    - name: Exe Donustur
+      run: |
+        pyinstaller --noconsole --onefile --name "LAN_Satranc" lan_satranc.py
+
+    - name: Exe Dosyasini Kaydet (Artifact)
+      uses: actions/upload-artifact@v4
+      with:
+        name: LAN_Satranc_Exe
+        path: dist/LAN_Satranc.exe
